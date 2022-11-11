@@ -8,10 +8,13 @@ import java.util.Scanner;
 public class Main {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
-        System.out.println("Input string:");
+        System.out.println("Input encoded string:");
         String input = scanner.nextLine();
         System.out.println("\nThe result:");
-        System.out.println(new ChuckNorrisUnaryCode(input).parseChuckNorrisUnaryCode());
+        String binaryString = ChuckNorrisUnaryCode.toBinaryString(input);
+        String decipheredString = AsciiString.toDecryptedString(binaryString);
+
+        System.out.println(decipheredString);
     }
 
 }

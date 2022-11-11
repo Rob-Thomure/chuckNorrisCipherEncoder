@@ -7,6 +7,9 @@ public class ChuckNorrisUnaryCode {
         this.asciiBinaryString = new AsciiString(string).parseAsciiBinaryString();
     }
 
+    /**
+     * @return - ciphered chuckNorrisUnaryCode string
+     */
     public String parseChuckNorrisUnaryCode() {
         StringBuilder stringBuilder = new StringBuilder();
         this.index = 0;
@@ -42,5 +45,19 @@ public class ChuckNorrisUnaryCode {
             }
         }
         return "0".repeat(numMatchingLeadingBit) + " ";
+    }
+
+    /**
+     * converts a chuckNorrisUnaryCode string to a binary string
+     * @param chuckNorrisUnaryCode -
+     */
+    public static String toBinaryString(String chuckNorrisUnaryCode) {
+        String[] blocks = chuckNorrisUnaryCode.split(" ");
+        StringBuilder binaryString = new StringBuilder();
+        for (int i = 1; i < blocks.length; i+=2) {
+            String bit = blocks[i - 1].equals("0")  ? "1" : "0";
+            binaryString.append(bit.repeat(blocks[i].length()));
+        }
+        return binaryString.toString();
     }
 }
