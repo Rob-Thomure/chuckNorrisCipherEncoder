@@ -9,23 +9,10 @@ public class Main {
             String operation = scanner.nextLine().toLowerCase();
             switch (operation) {
                 case "encode":
-                    System.out.println("Input string");
-                    ChuckNorrisUnaryCode chuckNorrisUnaryCode = new ChuckNorrisUnaryCode(scanner.nextLine());
-                    System.out.println("Encoded string:");
-                    System.out.println(chuckNorrisUnaryCode.parseChuckNorrisUnaryCode());
-                    System.out.println();
+                    encode(scanner);
                     break;
                 case "decode":
-                    System.out.println("Input encoded string:");
-                    String encodedMessage = scanner.nextLine();
-                    if (ChuckNorrisUnaryCode.isValid(encodedMessage)) {
-                        System.out.println("Decoded string:");
-                        String binaryString = ChuckNorrisUnaryCode.toBinaryString(encodedMessage);
-                        System.out.println(AsciiString.toDecryptedString(binaryString));
-                    } else {
-                        System.out.println("Encoded string is not valid.");
-                    }
-                    System.out.println();
+                    decode(scanner);
                     break;
                 case "exit":
                     exit = true;
@@ -36,5 +23,30 @@ public class Main {
                     break;
             }
         }
+    }
+
+    private static void encode(Scanner scanner) {
+        System.out.println("Input string");
+        ChuckNorrisUnaryCode chuckNorrisUnaryCode = new ChuckNorrisUnaryCode(scanner.nextLine());
+        System.out.println("Encoded string:");
+        System.out.println(chuckNorrisUnaryCode.parseChuckNorrisUnaryCode());
+        System.out.println();
+    }
+
+    private static void decode(Scanner scanner) {
+        System.out.println("Input encoded string:");
+        String chuckNorrisUnaryCode = scanner.nextLine();
+        if (ChuckNorrisUnaryCode.isValid(chuckNorrisUnaryCode)) {
+            System.out.println("Decoded string:");
+
+//            String binaryString = ChuckNorrisUnaryCode.toBinaryString(chuckNorrisUnaryCode);
+//            System.out.println(AsciiString.parseAsciiString(binaryString));
+            System.out.println(ChuckNorrisUnaryCode.toAsciiString(chuckNorrisUnaryCode));
+
+
+        } else {
+            System.out.println("Encoded string is not valid.");
+        }
+        System.out.println();
     }
 }

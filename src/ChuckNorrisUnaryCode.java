@@ -7,7 +7,7 @@ public class ChuckNorrisUnaryCode {
     private char leadingBitValue;
 
     public ChuckNorrisUnaryCode(String string) {
-        this.asciiBinaryString = new AsciiString(string).parseAsciiBinaryString();
+        this.asciiBinaryString = AsciiString.toBinaryString(string);
     }
 
     /**
@@ -21,6 +21,32 @@ public class ChuckNorrisUnaryCode {
             stringBuilder.append(addSecondBlock());
         }
         return stringBuilder.toString().trim();
+    }
+
+    private String addFirstBlock() {
+        leadingBitValue = asciiBinaryString.charAt(index);
+        if (leadingBitValue == '1') {
+            return "0 ";
+        } else {
+            return "00 ";
+        }
+    }
+
+    private String addSecondBlock() {
+        boolean nextBitMatchesLeadingBit = true;
+        int numMatchingLeadingBit = 1;
+
+        while (index < asciiBinaryString.length() && nextBitMatchesLeadingBit) {
+            if (++index < asciiBinaryString.length()) {
+                char nextBitValue = asciiBinaryString.charAt(index);
+                if (leadingBitValue == nextBitValue) {
+                    numMatchingLeadingBit++;
+                } else {
+                    nextBitMatchesLeadingBit = false;
+                }
+            }
+        }
+        return "0".repeat(numMatchingLeadingBit) + " ";
     }
 
     /**
@@ -91,37 +117,13 @@ public class ChuckNorrisUnaryCode {
 
 
 
-    private String addFirstBlock() {
-        leadingBitValue = asciiBinaryString.charAt(index);
-        if (leadingBitValue == '1') {
-            return "0 ";
-        } else {
-            return "00 ";
-        }
-    }
 
-    private String addSecondBlock() {
-        boolean nextBitMatchesLeadingBit = true;
-        int numMatchingLeadingBit = 1;
-
-        while (index < asciiBinaryString.length() && nextBitMatchesLeadingBit) {
-            if (++index < asciiBinaryString.length()) {
-                char nextBitValue = asciiBinaryString.charAt(index);
-                if (leadingBitValue == nextBitValue) {
-                    numMatchingLeadingBit++;
-                } else {
-                    nextBitMatchesLeadingBit = false;
-                }
-            }
-        }
-        return "0".repeat(numMatchingLeadingBit) + " ";
-    }
 
     /**
      * converts a chuckNorrisUnaryCode string to a binary string
      * @param chuckNorrisUnaryCode -
      */
-    public static String toBinaryString(String chuckNorrisUnaryCode) {
+    private static String toBinaryString(String chuckNorrisUnaryCode) {
         String[] blocks = chuckNorrisUnaryCode.split(" ");
         StringBuilder binaryString = new StringBuilder();
         for (int i = 1; i < blocks.length; i+=2) {
@@ -129,5 +131,15 @@ public class ChuckNorrisUnaryCode {
             binaryString.append(bit.repeat(blocks[i].length()));
         }
         return binaryString.toString();
+    }
+
+    /**
+     * converts chuckNorrisUnary code into a string of ascii characters (decoded message)
+     * @param chuckNorrisUnaryCode
+     * @return String decoded message
+     */
+    public static String toAsciiString(String chuckNorrisUnaryCode) {
+        String binaryString = toBinaryString(chuckNorrisUnaryCode);
+        return AsciiString.parseAsciiString(binaryString);
     }
 }

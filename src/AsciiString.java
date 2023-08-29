@@ -1,35 +1,30 @@
 public class AsciiString {
-    private final String string;
-
-    public AsciiString(String string) {
-        this.string = string;
-    }
 
     /**
-     * converts a string into a string of 8 bit binary characters
-     * @return string of 8 bit binary characters
+     * converts a string of ascii characters into a string of 7 bit binary digits for each character
+     * @param asciiString a string of ascii characters
+     * @return string of binary digits
      */
-    public String parseAsciiBinaryString() {
-        StringBuilder stringBuilder = new StringBuilder();
-        for (int i = 0; i < string.length(); i++) {
-            AsciiCharacter asciiCharacter = new AsciiCharacter(string.charAt(i));
-            stringBuilder.append(asciiCharacter.toBinaryString());
+    public static String toBinaryString(String asciiString) {
+        StringBuilder binaryDigits = new StringBuilder();
+        for (int i = 0; i < asciiString.length(); i++) {
+            binaryDigits.append(AsciiCharacter.toSevenDigitBinaryString(asciiString.charAt(i)));
         }
-        return stringBuilder.toString();
+        return binaryDigits.toString();
     }
 
     /**
-     * converts a binary string to a deciphered character string
+     * converts a string of binary digits into a string of characters
      * @param binaryString a string of 7 bit binary characters
+     * @return string of ascii characters
      */
-    public static String toDecryptedString(String binaryString) {
-        StringBuilder decipheredString = new StringBuilder();
+    public static String parseAsciiString(String binaryString) {
+        StringBuilder asciiCharacters = new StringBuilder();
         for (int i = 6; i < binaryString.length(); i += 7) {
             String binaryChar = binaryString.substring(i - 6, i + 1);
-            decipheredString.append ((char) Integer.parseInt(binaryChar, 2));
+            asciiCharacters.append ((char) Integer.parseInt(binaryChar, 2));
         }
-        return decipheredString.toString();
+        return asciiCharacters.toString();
     }
-
 }
 
