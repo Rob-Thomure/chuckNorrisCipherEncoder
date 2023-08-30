@@ -1,52 +1,52 @@
+import java.util.ArrayList;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class ChuckNorrisUnaryCode {
-    private final String asciiBinaryString;
-    private int index;
-    private char leadingBitValue;
 
-    public ChuckNorrisUnaryCode(String string) {
-        this.asciiBinaryString = AsciiString.toBinaryString(string);
+    /**
+     * @param asciiString - a text String consisting of ascii Characters
+     * @return String - chuck Norris Unary Code
+     */
+    public static String parseChuckNorrisUnaryCode(String asciiString) {
+        String binString = AsciiString.toBinaryString(asciiString);
+        List<ConsecutiveBitCount> consecutiveBitCounts = calculateBitCounts(binString);
+        return format(consecutiveBitCounts);
     }
 
     /**
-     * @return - ciphered chuckNorrisUnaryCode string
+     *
+     * @param binaryString - a String consisting of binary characters
+     * @return a list of ConsecutiveBitCount
      */
-    public String parseChuckNorrisUnaryCode() {
-        StringBuilder stringBuilder = new StringBuilder();
-        this.index = 0;
-        while (index < asciiBinaryString.length()) {
-            stringBuilder.append(addFirstBlock());
-            stringBuilder.append(addSecondBlock());
-        }
-        return stringBuilder.toString().trim();
-    }
-
-    private String addFirstBlock() {
-        leadingBitValue = asciiBinaryString.charAt(index);
-        if (leadingBitValue == '1') {
-            return "0 ";
-        } else {
-            return "00 ";
-        }
-    }
-
-    private String addSecondBlock() {
-        boolean nextBitMatchesLeadingBit = true;
-        int numMatchingLeadingBit = 1;
-
-        while (index < asciiBinaryString.length() && nextBitMatchesLeadingBit) {
-            if (++index < asciiBinaryString.length()) {
-                char nextBitValue = asciiBinaryString.charAt(index);
-                if (leadingBitValue == nextBitValue) {
-                    numMatchingLeadingBit++;
-                } else {
-                    nextBitMatchesLeadingBit = false;
-                }
+    private static List<ConsecutiveBitCount> calculateBitCounts(String binaryString) {
+        List<ConsecutiveBitCount> consecutiveBitCounts = new ArrayList<>();
+        for (int i = 0; i < binaryString.length(); i++) {
+            ConsecutiveBitCount consecutiveBitCount = new ConsecutiveBitCount(binaryString.charAt(i));
+            while (i < binaryString.length() - 1 && (consecutiveBitCount.getBit() == binaryString.charAt(i + 1))) {
+                consecutiveBitCount.addCount();
+                i++;
             }
+            consecutiveBitCounts.add(consecutiveBitCount);
         }
-        return "0".repeat(numMatchingLeadingBit) + " ";
+        return consecutiveBitCounts;
+    }
+
+    /**
+     * Two consecutive blocks are used to produce a series of the same value bits (only 1 or0 values):
+     * First block: it is always 0 or 00. If it is 0, then the series contains 1, if not, it contains 0.
+     * Second block: the number of 0 in this block is the number of bits in the series.
+     * @param consecutiveBitCounts - a list of ConsecutiveBitCount
+     * @return - formatted String of Chuck Norris Unary code.
+     */
+    private static String format(List<ConsecutiveBitCount> consecutiveBitCounts) {
+        StringBuilder stringBuilder = new StringBuilder();
+        consecutiveBitCounts.forEach(consecutiveBitCount -> {
+            stringBuilder.append(consecutiveBitCount.getBit() == '1' ? "0 " : "00 ");
+            stringBuilder.append("0".repeat(consecutiveBitCount.getCount())).append(" ");
+        });
+        return stringBuilder.toString().trim();
     }
 
     /**
@@ -111,14 +111,6 @@ public class ChuckNorrisUnaryCode {
         return bitCount % 7 == 0;
     }
 
-
-
-
-
-
-
-
-
     /**
      * converts a chuckNorrisUnaryCode string to a binary string
      * @param chuckNorrisUnaryCode -
@@ -135,7 +127,7 @@ public class ChuckNorrisUnaryCode {
 
     /**
      * converts chuckNorrisUnary code into a string of ascii characters (decoded message)
-     * @param chuckNorrisUnaryCode
+     * @param chuckNorrisUnaryCode - String of Chuck Norris Unary Code
      * @return String decoded message
      */
     public static String toAsciiString(String chuckNorrisUnaryCode) {

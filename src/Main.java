@@ -27,9 +27,9 @@ public class Main {
 
     private static void encode(Scanner scanner) {
         System.out.println("Input string");
-        ChuckNorrisUnaryCode chuckNorrisUnaryCode = new ChuckNorrisUnaryCode(scanner.nextLine());
+        String asciiString = scanner.nextLine();
         System.out.println("Encoded string:");
-        System.out.println(chuckNorrisUnaryCode.parseChuckNorrisUnaryCode());
+        System.out.println(ChuckNorrisUnaryCode.parseChuckNorrisUnaryCode(asciiString));
         System.out.println();
     }
 
@@ -38,12 +38,7 @@ public class Main {
         String chuckNorrisUnaryCode = scanner.nextLine();
         if (ChuckNorrisUnaryCode.isValid(chuckNorrisUnaryCode)) {
             System.out.println("Decoded string:");
-
-//            String binaryString = ChuckNorrisUnaryCode.toBinaryString(chuckNorrisUnaryCode);
-//            System.out.println(AsciiString.parseAsciiString(binaryString));
             System.out.println(ChuckNorrisUnaryCode.toAsciiString(chuckNorrisUnaryCode));
-
-
         } else {
             System.out.println("Encoded string is not valid.");
         }
