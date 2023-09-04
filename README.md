@@ -9,7 +9,7 @@ decrypt this sequence into text.
 
 ## Instructions
 
-The Chuck Norris Cipher Encoder are: encode, decode, ext.
+The Chuck Norris Cipher Encoder options are: encode, decode, exit.
 
 * encode - enter a text string, outputs an encoded binary text.
 * decode - enter an encoded binary text string, outputs decoded text.
